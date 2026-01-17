@@ -9,7 +9,7 @@ $(document).ready(function () {
   // Iniciar el juego al hacer clic en el botón "Start"
   $("#start").click(function () {
     let level = parseInt($("#level").val());
-    if (level >= 1 && level <= 5) {  // Poner aquí número de niveles
+    if (level >= 1 && level <= 7) {  // Poner aquí número de niveles
       resetGame();
       startTimer();
       generateProblems(level);
@@ -33,36 +33,47 @@ $(document).ready(function () {
   // Generar problemas según el nivel seleccionado
   function generateProblems(level) {
     var aleatorio = level;
-    for (let i = 0; i < 120; i++) {     // Poner aquí número de operaciones
+    for (let i = 0; i < 5; i++) {     // Poner aquí número de operaciones
      if (aleatorio === 5)
-      {  level = Math.floor(Math.random() * 4) + 1  }; 
-      let x = generateIntegerX(level);
-      let y = generateIntegerY(level);
-      if (level ===1 || level ===2){
+       { let numeros = [1,2,3,4];
+         let indiceAleatorio = Math.floor(Math.random() * numeros.length);
+         level = numeros[indiceAleatorio];
+       }
+      if (aleatorio === 6)
+       { let numeros = [1,3];
+         let indiceAleatorio = Math.floor(Math.random() * numeros.length);
+         level = numeros[indiceAleatorio];
+       }
+      if (aleatorio === 7)
+       { let numeros = [2,4];
+         let indiceAleatorio = Math.floor(Math.random() * numeros.length);
+         level = numeros[indiceAleatorio];
+       } 
+      if (level ===1){
+        let x = Math.floor(Math.random() * 50) + 1;
+        let y = (Math.floor(Math.random() * 5) + 1)*10+1;
         let correctAnswer = x + y;
         problems.push({ x, y, correctAnswer, level });
         }
-      if (level ===3 || level ===4){
+      if (level ===3){
+        let x = Math.floor(Math.random() * 50) + 1+50;
+        let y = (Math.floor(Math.random() * 4) + 1)*10+1;
+        let correctAnswer = x - y;
+        problems.push({ x, y, correctAnswer, level });
+        }
+      if (level ===2){
+        let x = Math.floor(Math.random() * 50) + 1;
+        let y = (Math.floor(Math.random() * 5) + 1)*10+9;
+        let correctAnswer = x + y;
+        problems.push({ x, y, correctAnswer, level });
+        }
+      if (level ===4){
+        let x = Math.floor(Math.random() * 50) + 1+50;
+        let y = (Math.floor(Math.random() * 4) + 1)*10+9;
         let correctAnswer = x - y;
         problems.push({ x, y, correctAnswer, level });
         }
     }  
-  }
-
-  // 1º NÚMERO: Generar números enteros según el nivel
-  function generateIntegerX(level) {
-    if (level === 1) return Math.floor(Math.random() * 50) + 1;
-    if (level === 2) return Math.floor(Math.random() * 50) + 1;
-    if (level === 3) return (Math.floor(Math.random() * 50) + 1)+50;
-    if (level === 4) return (Math.floor(Math.random() * 50) + 1)+50;
-  }
-  
-  // 2º NÚMERO: Generar números enteros según el nivel
-  function generateIntegerY(level) {
-    if (level === 1) return (Math.floor(Math.random() * 5) + 1)*10+1;
-    if (level === 2) return (Math.floor(Math.random() * 5) + 1)*10+9;
-    if (level === 3) return (Math.floor(Math.random() * 4) + 1)*10+1;
-    if (level === 4) return (Math.floor(Math.random() * 4) + 1)*10+9; 
   }
 
   // Mostrar el problema actual
