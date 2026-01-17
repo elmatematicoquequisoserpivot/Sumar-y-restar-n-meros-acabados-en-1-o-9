@@ -33,7 +33,7 @@ $(document).ready(function () {
   // Generar problemas según el nivel seleccionado
   function generateProblems(level) {
     var aleatorio = level;
-    for (let i = 0; i < 5; i++) {     // Poner aquí número de operaciones
+    for (let i = 0; i < 120; i++) {     // Poner aquí número de operaciones
      if (aleatorio === 5)
        { let numeros = [1,2,3,4];
          let indiceAleatorio = Math.floor(Math.random() * numeros.length);
