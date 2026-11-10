@@ -1,92 +1,369 @@
-.body {
-  font-family: "Times New Roman", Times New Roman;
+/* ===== Colores y medidas que se reutilizan en toda la página ===== */
+:root {
+  --amarillo: #ffd315;      /* Color de El Tour de Mates */
+  --verde: #1f9d55;
+  --verde-claro: #e3f6eb;
+  --rojo: #d64545;
+  --rojo-claro: #fbe6e6;
+  --texto: #222;
+  --texto-suave: #666;
+  --fondo: #f5f6f8;
+  --blanco: #fff;
+  --borde: #ddd;
+  --radio: 12px;
 }
 
-.card {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 500px; /* Tamaño fijo para el contenedor */
-  margin: 0 auto; /* Centrar el contenedor */
+/* ===== Estilos generales ===== */
+* {
+  box-sizing: border-box;
 }
 
-.special-message {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #ffd315; /* Color llamativo */
+body {
+  margin: 0;
+  padding: 16px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--amarillo);   /* Se ve mientras carga la imagen de fondo */
+  color: var(--texto);
   text-align: center;
-  margin-top: 20px;
-  animation: bounce 2s infinite;
 }
 
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-20px);
-  }
-  60% {
-    transform: translateY(-10px);
-  }
+/* Imagen de fondo con símbolos matemáticos. Se pone en una capa fija
+   detrás de todo (en vez de "background-attachment: fixed", que falla
+   en los iPhone) para que no se mueva al hacer scroll */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("img/fondo.png") center / cover;
 }
 
-.problemStyle {
-  background-color: #FFD315;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 10px auto;
-  max-width: 300px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* El atributo "hidden" oculta las pantallas que no se usan */
+[hidden] {
+  display: none !important;
 }
 
-.problem input {
+/* ===== Cabecera ===== */
+.cabecera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Marco del logo: cuadrado, con esquinas redondeadas y sombra
+   para que destaque sobre el fondo */
+.logo-enlace {
+  display: block;
+  width: 160px;
+  aspect-ratio: 1;
+  overflow: hidden;            /* Recorta lo que sobresale del marco */
+  border-radius: 24px;
+  border: 4px solid var(--blanco);
+  background: var(--amarillo);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.logo-enlace:hover {
+  transform: rotate(-3deg) scale(1.04);
+}
+
+/* La imagen tiene mucho margen amarillo: se amplía para que
+   el dibujo ocupe casi todo el marco */
+.logo {
+  display: block;
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  text-align: center;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  height: 100%;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.92);
+  transform: scale(1.25);
 }
 
-.problem button {
-  margin-top: 10px;
+.titulo {
+  background: rgba(255, 255, 255, 0.92);
+  padding: 8px 24px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.titulo h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.marca {
+  margin: 2px 0 0;
+  color: var(--texto-suave);
+}
+
+/* ===== Tarjeta que contiene cada pantalla ===== */
+.tarjeta {
+  background: var(--blanco);
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: var(--radio);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.tarjeta h2 {
+  margin-top: 0;
+}
+
+/* ===== Formulario de configuración ===== */
+label[for="nivel"],
+legend {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+select {
   width: 100%;
-  background-color: #28a745; /* Verde para el botón Enviar */
-  border-color: #28a745;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: var(--blanco);
+  margin-bottom: 20px;
 }
 
-.operations-list {
-  margin-top: 20px;
-  text-align: center; /* Centrar la lista */
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 20px;
 }
 
-.operation-item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+/* Cada modo de juego se ve como una tarjeta pulsable */
+.opcion {
   display: flex;
   align-items: center;
-  justify-content: center; /* Centrar el contenido */
-  gap: 10px; /* Espacio entre el icono y el texto */
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: 2px solid var(--borde);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
 }
 
-.operation-item.correct {
-  color: green;
+.opcion span {
+  display: flex;
+  flex-direction: column;
 }
 
-.operation-item.incorrect {
-  color: red;
+.opcion small {
+  color: var(--texto-suave);
 }
 
-.progress {
-  height: 20px;
-  border-radius: 10px;
+/* Resalta el modo seleccionado */
+.opcion:has(input:checked) {
+  border-color: var(--amarillo);
+  background: #fffbe6;
+}
+
+.opcion input {
+  accent-color: var(--verde);
+  width: 18px;
+  height: 18px;
+}
+
+/* ===== Botones ===== */
+.boton {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.boton-principal {
+  background: var(--verde);
+  color: var(--blanco);
+}
+
+.boton-principal:hover {
+  filter: brightness(1.1);
+}
+
+.boton-secundario {
+  background: transparent;
+  color: var(--texto-suave);
+  border: 1px solid var(--borde);
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* ===== Pantalla de práctica ===== */
+.marcador {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+/* El reloj se vuelve rojo en los últimos segundos */
+#reloj.urgente {
+  color: var(--rojo);
+}
+
+.barra {
+  height: 10px;
+  background: #e9ecef;
+  border-radius: 5px;
   overflow: hidden;
 }
 
-.progress-bar {
-  background-color: #28a745; /* Verde para la barra de progreso */
-  transition: width 0.5s ease;
+.barra-relleno {
+  height: 100%;
+  width: 0%;
+  background: var(--verde);
+  transition: width 0.3s ease;
+}
+
+.caja-operacion {
+  background: var(--amarillo);
+  padding: 20px;
+  border-radius: var(--radio);
+  margin: 20px auto 12px;
+  max-width: 320px;
+  transition: background-color 0.2s;
+}
+
+/* Destello breve al acertar o fallar */
+.caja-operacion.destello-acierto {
+  background: #9be3b6;
+}
+
+.caja-operacion.destello-fallo {
+  background: #f3a5a5;
+}
+
+.operacion {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  white-space: nowrap;
+}
+
+/* Tamaño de letra de al menos 16px para que el móvil no haga zoom */
+#respuesta {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.6rem;
+  text-align: center;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.contador {
+  font-size: 1.1rem;
+  margin: 8px 0;
+}
+
+#btn-salir {
+  margin-top: 16px;
+}
+
+/* ===== Listas de operaciones ===== */
+.lista-operaciones {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.lista-operaciones li {
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+}
+
+.lista-operaciones li.acierto {
+  background: var(--verde-claro);
+  color: var(--verde);
+}
+
+.lista-operaciones li.fallo {
+  background: var(--rojo-claro);
+  color: var(--rojo);
+}
+
+/* Mensaje cuando no hay fallos */
+.lista-operaciones li.vacia {
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+/* ===== Pantalla de resultados ===== */
+.mensaje-especial {
+  font-size: 2.2rem;
+  color: #e0b000;
+  animation: rebote 2s infinite;
+}
+
+@keyframes rebote {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-12px); }
+  60% { transform: translateY(-6px); }
+}
+
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.dato {
+  background: var(--fondo);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.dato span {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.dato {
+  color: var(--texto-suave);
+}
+
+.dato span {
+  color: var(--texto);
+}
+
+/* El tiempo total ocupa toda la fila */
+.dato-ancho {
+  grid-column: 1 / -1;
+}
+
+/* ===== Pantallas grandes (ordenador) ===== */
+@media (min-width: 600px) {
+  .logo-enlace {
+    width: 200px;
+  }
+
+  .resumen {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .operacion {
+    font-size: 3.2rem;
+  }
 }
