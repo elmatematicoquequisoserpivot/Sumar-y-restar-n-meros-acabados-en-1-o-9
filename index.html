@@ -1,69 +1,125 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
-<head >
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sumar y restar números acabados en 1 o 9</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
-    <!-- jQuery y Figlet.js -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-     <!-- Custom JS -->
-    <script src="script.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sumar y restar números acabados en 1 o 9</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-  
- <div>
-<p style="text-align: center; "><i> 
-  <b style="text-align: center; color: orange;">El Tour de Mates</b>:
-    la gran carrera de cálculo mental
-    </i></p>
-<p style="text-align: center; "><a href="https://eltourdemates.wordpress.com/">www.eltourdemates.wordpress.com</a></p>
-</div>
-<p style="text-align: center; "><h2 style="text-align: center;" class="display-6 mb-6">🚴‍♀️ Sumar y restar números acabados en 1 o 9 🚴‍♂️</h2>
-  
-  <div class="container text-center py-10">
+<body>
+
+  <!-- ========== CABECERA ========== -->
+  <header class="cabecera">
+    <a href="https://eltourdemates.wordpress.com/" class="logo-enlace">
+      <img src="img/logo.svg" alt="El Tour de Mates" class="logo">
+    </a>
+    <div class="titulo">
+      <h1>🚴‍♀️ Sumar y restar números acabados en 1 o 9 🚴‍♂️</h1>
+      <p class="marca"><i>Estrategias de cálculo mental</i></p>
     </div>
-<body class="bg-light">
-    <div class="container text-center py-5">
-        <div class="card mx-auto" style="max-width: 500px;">
-            <div class="card-body">
-                <h5 class="card-title">Selecciona un nivel</h5>
-                <p class="card-text">Elige la dificultad del juego:</p>
-                <select id="level" class="form-select mb-3">
-                    <option value="5">Sumar y restar números acabados en 1 o 9 (nivel Tour de Mates)</option>
-                    <option value="6">Sumar y restar números acabados en 1</option>
-                    <option value="7">Sumar y restar números acabados en 9</option>
-                  <option value="1">Sumar números acabados en 1</option>
-                    <option value="3">Restar números acabados en 1</option>
-                    <option value="2">Sumar números acabados en 9</option>
-                    <option value="4">Restar números acabados en 9</option>
-                </select>
-                <button id="start" class="btn btn-success w-100">Comenzar</button>
+  </header>
 
-                <!-- Barra de progreso y reloj -->
-                <div id="progress-bar" class="mt-4" style="display: none;">
-                    <div class="progress">
-                        <div id="progress" class="progress-bar bg-success" role="progressbar" style="width: 0%;"></div>
-                    </div>
-                </div>
-                <div id="timer" class="mt-3 h5" style="display: none;">
-                    ⏱️ Tiempo: <span id="time">00:00</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Área de operaciones -->
-      <div id="figlet" class="mt-4 figlet"></div>
-      <div id="problems" class="mt-4" ></div>
-      <div id="score" class="mt-4 h4"></div>
-      <div id="operations-list" class="mt-4"></div>
+  <!-- ========== PANTALLA 1: CONFIGURACIÓN ========== -->
+  <div id="pantalla-config" class="tarjeta">
 
+    <!-- Nivel: los números (value) son los mismos que usa script.js -->
+    <label for="nivel">Nivel</label>
+    <select id="nivel">
+      <option value="11">Sumar y restar números acabados en 1 o 9 (nivel Tour de Mates)</option>
+      <option value="5">Sumar y restar números acabados en 1</option>
+      <option value="6">Sumar y restar números acabados en 9</option>
+      <!--  <option value="1">Sumar números acabados en 1</option> -->
+      <!--  <option value="2">Sumar números acabados en 9</option> -->
+      <!--  <option value="3">Restar números acabados en 1</option> -->
+      <!--  <option value="4">Restar números acabados en 9</option> -->
+
+    </select>
+
+    <!-- Modo de juego: cada opción es una tarjeta que se puede pulsar -->
+    <fieldset>
+      <legend>Modo de juego</legend>
+      <label class="opcion">
+        <input type="radio" name="modo" value="120" checked>
+        <span>
+          <strong>120 operaciones</strong>
+          <small>Sin límite de tiempo</small>
+        </span>
+      </label>
+      <label class="opcion">
+        <input type="radio" name="modo" value="3">
+        <span>
+          <strong>Contrarreloj 3 min</strong>
+          <small>Haz todas las que puedas</small>
+        </span>
+      </label>
+      <label class="opcion">
+        <input type="radio" name="modo" value="5">
+        <span>
+          <strong>Contrarreloj 5 min</strong>
+          <small>Haz todas las que puedas</small>
+        </span>
+      </label>
+    </fieldset>
+
+    <button id="btn-empezar" class="boton boton-principal">Empezar</button>
+  </div>
+
+
+  <!-- ========== PANTALLA 2: PRÁCTICA ========== -->
+  <!-- "hidden" hace que la pantalla empiece oculta -->
+  <div id="pantalla-practica" class="tarjeta" hidden>
+
+    <!-- Progreso y reloj -->
+    <div class="marcador">
+      <span id="progreso">Operación 1/120</span>
+      <span id="reloj">⏱️ 00:00</span>
+    </div>
+    <div class="barra">
+      <div id="barra-relleno" class="barra-relleno"></div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Operación y respuesta -->
+    <form id="caja-operacion" class="caja-operacion" autocomplete="off">
+      <p id="texto-operacion" class="operacion"></p>
+      <!-- inputmode="numeric" saca el teclado numérico en el móvil -->
+      <input id="respuesta" type="text" inputmode="numeric" placeholder="Tu respuesta">
+      <button type="submit" class="boton boton-principal">Comprobar</button>
+    </form>
+
+    <!-- Contador de aciertos y fallos -->
+    <p class="contador">✅ <span id="aciertos">0</span> &nbsp; ❌ <span id="fallos">0</span></p>
+
+    <!-- Lista de operaciones respondidas -->
+    <ul id="lista-operaciones" class="lista-operaciones"></ul>
+
+    <button id="btn-salir" class="boton boton-secundario">Salir</button>
+  </div>
+
+
+  <!-- ========== PANTALLA 3: RESULTADOS ========== -->
+  <div id="pantalla-resultados" class="tarjeta" hidden>
+    <h2 id="mensaje-final" class="mensaje-especial">¡Enhorabuena!</h2>
+
+    <div class="resumen">
+      <div class="dato"><span id="res-aciertos">0</span>Aciertos</div>
+      <div class="dato"><span id="res-fallos">0</span>Fallos</div>
+      <div class="dato"><span id="res-porcentaje">0%</span>Acierto</div>
+      <div class="dato"><span id="res-hechas">0</span>Operaciones</div>
+      <div class="dato dato-ancho"><span id="res-tiempo">00:00</span>Tiempo total</div>
+    </div>
+
+    <h3>Operaciones falladas</h3>
+    <ul id="lista-falladas" class="lista-operaciones"></ul>
+
+    <div class="botones">
+      <button id="btn-repetir" class="boton boton-principal">Repetir</button>
+      <button id="btn-volver" class="boton boton-secundario">Volver a configuración</button>
+    </div>
+  </div>
+
+
+  <!-- El script va al final para que la página ya esté cargada -->
+  <script src="script.js"></script>
 </body>
 </html>
